@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+<div th:replace="public::link"></div>
+</head>
+<body>
+	<div id="wrapper">
+<!--	bar-->
+<div th:replace="public::bar"></div>
+<!--      -->
+<div th:replace="public::stu_menu(adminUri='index-student.html')"></div>
+<!--        -->
+		<div id="page-wrapper">
+            <div id="page-inner">
+            	<div class="row">
+            		   <div class="col-md-12">
+                        	<h1 class="page-header">
+                            Dashboard <small>Summary of your App</small>
+                        	</h1>
+                    	</div>
+            	</div>
+            	<div class="row">
+            		<div class="col-md-3 col-xs-6">
+							<div class="panel panel-default">
+								<div class="panel-body easypiechart-panel">
+									<h4>Customers</h4>
+									<div class="easypiechart easypiechart-blue" data-percent="82" ><span class="percent">82%</span>
+									</div>
+									<h5>1251</h5>
+								</div>
+							</div>
+					</div>
+           	            		<div class="col-md-3 col-xs-6">
+							<div class="panel panel-default">
+								<div class="panel-body easypiechart-panel">
+									<h4>Customers</h4>
+									<div class="easypiechart easypiechart-red" data-percent="10" ><span class="percent">10%</span>
+									</div>
+									<h5>1251</h5>
+								</div>
+							</div>
+					</div>
+            	</div>
+            	<div  class="row" id="zj" style="width: 1500px;height:400px;"></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('zj'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'line',
+                data: [10,20, 36, 10, 10, 20]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+ 
+</html>

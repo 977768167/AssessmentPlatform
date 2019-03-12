@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- Bootstrap Styles-->
+    <div th:replace="public::link"></div>
+</head>
+<body>
+	<div id="wrapper">
+        <div th:replace="public::bar"></div>
+        <div th:replace="public::admin_menu(adminUri='teacher-information.html')"></div>
+        <div id="page-wrapper">
+			<div id="page-inner">
+<!--			 -->
+				 <div class="row">
+                   <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <h1 class="page-header">
+                            详细信息 <small>Detailed information</small>
+                        </h1>
+                    </div>
+                </div> 
+<!--                -->
+		            <div class="row">
+               <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <!-- Advanced Tables -->
+					 <div class="form-group">
+                         <label>教师姓名</label>
+                         <label class="form-control" th:text="${teacher.getTeacherName()}"></label>
+                     </div>
+					 <div class="form-group">
+                         <label>教师编号</label>
+                         <label class="form-control" th:text="${teacher.getTeacherNumber()}"></label>
+                     </div>
+                <div class="form-group">
+                    <label>所属分院</label>
+                    <label class="form-control" th:text="${teacher.getBranch()}"></label>
+                </div>
+                 <div class="form-group">
+                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                         <thead>
+                         <tr>
+                             <th>课程编号</th>
+                             <th>课程名称</th>
+                             <th>所属专业</th>
+                             <th>所属班级</th>
+                             <th>学年</th>
+                             <th>学期</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         <tr th:each="curriculum:${curriculums}">
+                             <td th:text="${curriculum.getCourseId()}">666</td>
+                             <td th:text="${curriculum.getCourseName()}">Java程序设计</td>
+                             <td th:text="${curriculum.getSpeciality()}">网络工程</td>
+                             <td th:text="${curriculum.getClasses()}">李红</td>
+                             <th th:text="${curriculum.getSchoolYear()}">2018</th>
+                             <th th:text="${curriculum.getTerm()}"></th>
+                         </tr>
+                         </tbody>
+                     </table>
+                </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+			</div>
+          </div>
+            <!-- /. PAGE INNER  -->
+        </div>
+</body>
+</html>

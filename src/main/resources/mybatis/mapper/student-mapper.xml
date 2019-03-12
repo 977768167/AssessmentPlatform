@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.assessmentalatform.mapper.StudentMapper">
+
+    <select id="selectStuNumber" resultType="int">
+        select count(*) from student
+    </select>
+
+    <select id="selectStuByPage" resultType="com.example.assessmentalatform.bean.Student">
+        select * from student limit #{page},10
+    </select>
+
+    <insert id="insertStu">
+        insert into student(sno,s_name,branch,speciality,class,password) values (#{sno},#{sName},#{branch},#{speciality},#{classs},#{password})
+    </insert>
+
+    <delete id="deleteStuById">
+        delete from student where id=#{id}
+    </delete>
+
+</mapper>

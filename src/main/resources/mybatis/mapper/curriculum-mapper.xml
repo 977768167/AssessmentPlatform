@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.assessmentalatform.mapper.CurriculumMapper">
+
+    <select id="selectCurriculumNumber" resultType="int">
+        select count(*) from curriculum
+    </select>
+
+    <select id="selectCurriculumByPage" resultType="com.example.assessmentalatform.bean.Curriculum">
+        select * from curriculum limit #{page},10
+    </select>
+
+    <select id="selectCurriculumByTeacherAndTime" resultType="com.example.assessmentalatform.bean.Curriculum">
+        select * from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term}
+    </select>
+
+    <insert id="insertCurriculum">
+        insert into curriculum(course_id,course_name,teacher_id,teacher_name,speciality,classes,school_year,term) values (#{courseId},#{courseName},#{teacherId},#{teacherName},#{speciality},#{classes},#{schoolYear},#{term})
+    </insert>
+
+    <delete id="deleteCurriculumById">
+        delete from curriculum where id=#{id}
+    </delete>
+
+</mapper>
