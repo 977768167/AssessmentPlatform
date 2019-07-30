@@ -15,4 +15,10 @@ public interface StudentMapper {
     public Collection<Student> selectStuByPage(Integer page);
 
     public int deleteStuById(Integer id);
+
+    public Collection<Student> selectTeacherIdFindStu(String teacherid,Integer page);
+
+    public int selectStuByTeacherIdNumber(String teacherid);
+
+    public Student selectStuById(Integer id);
 }

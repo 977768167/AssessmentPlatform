@@ -17,4 +17,11 @@ public interface CurriculumMapper {
     public int deleteCurriculumById(Integer id);
 
     public Collection<Curriculum> selectCurriculumByTeacherAndTime(String teacherId,String schoolYear,String term);
+
+    public Collection<Curriculum> selectCurriculumByTeacherAndTimeAndPage(String teacherId,String schoolYear,String term,Integer page);
+
+    public int selectCurriculumNumberByTeacherAndTime(String teacherId,String schoolYear,String term);
+
+    public Collection<Curriculum> selectCurriculumByTeacherAndTimeAndClass(String teacherId,String schoolYear,String term,String speciality,String classes);
+
 }

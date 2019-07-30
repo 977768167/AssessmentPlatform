@@ -8,12 +8,13 @@
     <div th:replace="public::link"></div>
 </head>
 
+
 <body>
 	<div id="wrapper">
 <!--	bar-->
 <div th:replace="public::bar"></div>
 <!--      -->
-<div th:replace="public::admin_menu(adminUri='index-administrator.html')"></div>
+<div th:replace="public::admin_menu(Uri='index-administrator.html')"></div>
 <!--        -->
 		<div id="page-wrapper">
             <div id="page-inner">
@@ -45,7 +46,7 @@
                                 
                             <div class="panel-right">
 							<h3 th:text="${courseNumber}">52,160 </h3>
-                               <strong> 课程数</strong>
+                               <strong onclick="getData()"> 课程数</strong>
 
                             </div>
                         </div>
@@ -82,32 +83,56 @@
 	</div>
 	
 </body>
-<script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('zj'));
-
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:['销量']
-            },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'line',
-                data: [10,20, 36, 10, 10, 20]
-            }]
-        };
-
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-    </script>
-
 </html>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('zj'));
+
+    //function getData(){
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        // IE6, IE5 浏览器执行代码
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            window.alert(JSON.parse(xmlhttp.responseText))
+
+            var option = {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                tooltip: {},
+                legend: {
+                    data:['销量']
+                },
+                xAxis: {
+                    data:JSON.parse(xmlhttp.responseText)
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'line',
+                    data: [[${data}]]
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    }
+    xmlhttp.open("GET","/a",true);
+    xmlhttp.send();
+    // }
+    // 指定图表的配置项和数据
+
+
+
+</script>

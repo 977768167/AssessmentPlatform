@@ -1,9 +1,6 @@
 package com.example.assessmentalatform.tool;
 
-import com.example.assessmentalatform.bean.Course;
-import com.example.assessmentalatform.bean.Curriculum;
-import com.example.assessmentalatform.bean.Student;
-import com.example.assessmentalatform.bean.Teacher;
+import com.example.assessmentalatform.bean.*;
 import com.example.assessmentalatform.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +19,8 @@ public class DataInsert {
     CurriculumMapper curriculumMapper;
     @Autowired
     CourseMapper courseMapper;
+    @Autowired
+    MultipleChoiceMapper multipleChoiceMapper;
     @Bean
     public DataInsert getDataInsert(){
         return new DataInsert();
@@ -44,7 +43,7 @@ public class DataInsert {
                 student.setsName(result.get(i).get(1).toString());
                 student.setBranch(result.get(i).get(2).toString());
                 student.setSpeciality(result.get(i).get(3).toString());
-                student.setClasss(result.get(i).get(4).toString());
+                student.setClasses(result.get(i).get(4).toString());
                 student.setPassword(result.get(i).get(5).toString());
                 studentMapper.insertStu(student);
             }
@@ -60,7 +59,7 @@ public class DataInsert {
                 courseMapper.insertCourse(course);
             }
         }
-        else {
+        else if (no==4){
             Curriculum curriculum=new Curriculum();
             for (int i=0;i<result.size();i++){
                 curriculum.setCourseId(result.get(i).get(0).toString());
@@ -72,6 +71,21 @@ public class DataInsert {
                 curriculum.setSchoolYear(result.get(i).get(6).toString());
                 curriculum.setTerm(result.get(i).get(7).toString());
                 curriculumMapper.insertCurriculum(curriculum);
+            }
+        }
+        else {
+            MultipleChoice multipleChoice=new MultipleChoice();
+            for (int i=0;i<result.size();i++){
+                multipleChoice.setQuestion(result.get(i).get(0).toString());
+                multipleChoice.setA(result.get(i).get(1).toString());
+                multipleChoice.setB(result.get(i).get(2).toString());
+                multipleChoice.setC(result.get(i).get(3).toString());
+                multipleChoice.setD(result.get(i).get(4).toString());
+                multipleChoice.setAnswer(result.get(i).get(5).toString());
+                multipleChoice.setDifficulty(result.get(i).get(6).toString());
+                multipleChoice.setUploadTeacherNumber(result.get(i).get(7).toString());
+                multipleChoice.setCourseName(result.get(i).get(8).toString());
+                multipleChoiceMapper.insertMultipleChoice(multipleChoice);
             }
         }
     }

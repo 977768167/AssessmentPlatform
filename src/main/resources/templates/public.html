@@ -8,8 +8,7 @@
 <link href="/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
 <!-- Custom Styles-->
 <link href="/assets/css/custom-styles.css" rel="stylesheet" />
-<!-- Google Fonts-->
-<!--<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />-->
+
 <script src="/assets/js/echarts.min.js"></script>
 
 <script src="assets/js/jquery-1.10.2.js"></script>
@@ -71,22 +70,22 @@
         <ul class="nav">
 
             <li>
-                <a th:class="${adminUri=='index-administrator.html'?'active-menu':''}" th:href="@{/admin/index}"><i class="fa fa-dashboard"></i> 数据概况</a>
+                <a th:class="${Uri=='index-administrator.html'?'active-menu':''}" th:href="@{/admin/index}"><i class="fa fa-dashboard"></i> 数据概况</a>
             </li>
             <li>
-                <a th:class="${adminUri=='teacher-information.html'?'active-menu':''}" th:href="@{/admin/teacher}"><i class="fa fa-desktop"></i> 教师信息</a>
+                <a th:class="${Uri=='teacher-information.html'?'active-menu':''}" th:href="@{/admin/teacher}"><i class="fa fa-desktop"></i> 教师信息</a>
             </li>
             <li>
-                <a th:class="${adminUri=='student-information.html'?'active-menu':''}" th:href="@{/admin/stu}"><i class="fa fa-bar-chart-o"></i> 学生信息</a>
+                <a th:class="${Uri=='student-information.html'?'active-menu':''}" th:href="@{/admin/stu}"><i class="fa fa-bar-chart-o"></i> 学生信息</a>
             </li>
             <li>
-                <a th:class="${adminUri=='course-information.html'?'active-menu':''}" th:href="@{/admin/course}"><i class="fa fa-bar-chart-o"></i> 课目信息</a>
+                <a th:class="${Uri=='course-information.html'?'active-menu':''}" th:href="@{/admin/course}"><i class="fa fa-bar-chart-o"></i> 课目信息</a>
             </li>
             <li>
-                <a th:class="${adminUri=='curriculum-information.html'?'active-menu':''}" th:href="@{/admin/curriculum}"><i class="fa fa-table"></i> 课程信息</a>
+                <a th:class="${Uri=='curriculum-information.html'?'active-menu':''}" th:href="@{/admin/curriculum}"><i class="fa fa-table"></i> 课程信息</a>
             </li>
             <li>
-                <a th:class="${adminUri=='file-request.html'?'active-menu':''}" th:href="@{/admin/file/request}"><i class="fa fa-qrcode"></i> 信息导入</a>
+                <a th:class="${Uri=='file-request.html'?'active-menu':''}" th:href="@{/admin/file/request}"><i class="fa fa-qrcode"></i> 信息导入</a>
             </li>
 
         </ul>
@@ -99,22 +98,22 @@
         <ul class="nav">
 
             <li>
-                <a class="active-menu" href="index.html"><i class="fa fa-dashboard"></i> 数据概况</a>
+                <a th:class="${Uri=='index-teacher.html'?'active-menu':''}" th:href="@{/teacher/index}"><i class="fa fa-dashboard"></i> 数据概况</a>
             </li>
             <li>
-                <a href="form.html"><i class="fa fa-edit"></i> 课程信息</a>
+                <a th:class="${Uri=='curriculum-information.html'?'active-menu':''}" th:href="@{/teacher/curriculum}"><i class="fa fa-edit"></i> 课程信息</a>
             </li>
             <li>
-                <a href="ui-elements.html"><i class="fa fa-desktop"></i> 学生信息</a>
+                <a th:class="${Uri=='student-information.html'?'active-menu':''}"th:href="@{/teacher/student}"><i class="fa fa-desktop"></i> 学生信息</a>
             </li>
             <li>
-                <a href="chart.html"><i class="fa fa-bar-chart-o"></i> 试题信息</a>
+                <a th:class="${Uri=='teacher-multiple-choice.html'?'active-menu':''}" th:href="@{/teacher/multiplechoice}"><i class="fa fa-bar-chart-o"></i> 试题信息</a>
             </li>
             <li>
-                <a href="tab-panel.html"><i class="fa fa-qrcode"></i> 试题导入</a>
+                <a th:class="${Uri=='question-request.html'?'active-menu':''}" th:href="@{/teacher/question-request}"><i class="fa fa-qrcode"></i> 试题导入</a>
             </li>
             <li>
-                <a href="tab-panel.html"><i class="fa fa-table"></i> 生成试卷</a>
+                <a th:class="${Uri=='generate-papers.html'?'active-menu':''}" th:href="@{/teacher/generate-papers}"><i class="fa fa-table"></i> 生成试卷</a>
             </li>
 
         </ul>

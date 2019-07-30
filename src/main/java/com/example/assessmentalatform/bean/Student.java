@@ -6,15 +6,15 @@ public class Student {
     private String sName;//姓名
     private String branch;//分院
     private String speciality;//专业
-    private String classs;//班级
+    private String classes;//班级
     private String password;//密码
 
-    public String getClasss() {
-        return classs;
+    public String getClasses() {
+        return classes;
     }
 
-    public void setClasss(String classs) {
-        this.classs = classs;
+    public void setClasses(String classes) {
+        this.classes = classes;
     }
 
     public Integer getId() {

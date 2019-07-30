@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- Bootstrap Styles-->
+    <div th:replace="public::link"></div>
+</head>
+<body>
+<div id="wrapper">
+    <!--	bar-->
+    <div th:replace="public::bar"></div>
+    <!--      -->
+    <div th:replace="public::teacher_menu(Uri='question-request.html')"></div>
+    <!--        -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <!--			 -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h1 class="page-header">
+                        [[${classification}]]上传<small> Add classification</small>
+                    </h1>
+                </div>
+            </div>
+            <!--                -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 panel panel-default">
+                    <form th:action="@{/teacher/data/insert}" method="post" enctype="multipart/form-data">
+                        <br>
+                        <!-- Advanced Tables -->
+                        <div class="col-md-5"><br><br></div>
+                        <div class="form-group">
+                            <label>上传题库</label>
+                            <input type="file" name="file">
+                        </div>
+                        <br><br>
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-primary btn-lg" data-toggle="modal" type="submit">
+                                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp上传&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            </button>
+                        </div>
+                        <!--End Advanced Tables -->
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+</body>
+</html>

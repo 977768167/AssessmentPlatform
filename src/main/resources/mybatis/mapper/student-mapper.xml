@@ -13,11 +13,22 @@
     </select>
 
     <insert id="insertStu">
-        insert into student(sno,s_name,branch,speciality,class,password) values (#{sno},#{sName},#{branch},#{speciality},#{classs},#{password})
+        insert into student(sno,s_name,branch,speciality,classes,password) values (#{sno},#{sName},#{branch},#{speciality},#{classes},#{password})
     </insert>
 
     <delete id="deleteStuById">
         delete from student where id=#{id}
     </delete>
 
+    <select id="selectStuByTeacherIdNumber" resultType="int">
+        select count(*) from student where classes in (select classes from curriculum where teacher_id = #{teacherid})
+    </select>
+
+    <select id="selectTeacherIdFindStu" resultType="com.example.assessmentalatform.bean.Student" >
+        select * from student where classes in (select classes from curriculum where teacher_id=#{param1})  limit #{param2},10
+    </select>
+
+    <select id="selectStuById" resultType="com.example.assessmentalatform.bean.Student">
+        select * from student where sno=#{id}
+    </select>
 </mapper>

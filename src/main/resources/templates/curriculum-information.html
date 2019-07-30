@@ -11,7 +11,7 @@
 	<div id="wrapper">
         <div th:replace="public::bar"></div>
         <!--      -->
-        <div th:replace="public::admin_menu(adminUri='curriculum-information.html')"></div>
+        <div th:replace="public::${transmission.getMenu()}(Uri='curriculum-information.html')"></div>
 
         <div id="page-wrapper">
 			<div id="page-inner">
@@ -60,7 +60,7 @@
                                     </tbody>
                                 </table>
 <!--										<div class="col-md-4"></div>-->
-	<div th:replace="public::page(actionUrl='/admin/data/page/',object='curriculum')"></div>
+	<div th:replace="public::page(actionUrl='/teacher/data/page',object='curriculum')"></div>
 <!--                       					<div class="col-md-4"></div>-->
                         </div>
            							  

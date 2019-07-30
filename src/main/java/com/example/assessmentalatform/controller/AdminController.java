@@ -41,6 +41,7 @@ public class AdminController {
     DataInsert dataInsert;
     @Autowired
     Time time;
+    String admin_menu="admin_menu";
     @GetMapping("/admin/insert")
     public String insertAdmin(@ModelAttribute Administrator administrator){
         //administratorMapper.insertAdmin(administrator);
@@ -48,7 +49,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/data/insert")//文件上传数据
-    public String insertTeacher(@RequestParam("file") MultipartFile file,@RequestParam("no") Integer no){
+    public String adminInsertData(@RequestParam("file") MultipartFile file,@RequestParam("no") Integer no){
 
         if(!file.isEmpty()){
             fileWrite.fileWritePath(file,file.getOriginalFilename());
@@ -77,6 +78,7 @@ public class AdminController {
             Collection<Student> students=studentMapper.selectStuByPage((transmission.getPage()-1)*10);
             model.addAttribute("students",students);
             model.addAttribute("transmission",transmission);
+            model.addAttribute("url","/admin/data/page");
             return "student-information";
         }
         else if (object.equals("course")){
@@ -102,10 +104,11 @@ public class AdminController {
 
         Teacher teacher=teacherMapper.selectTeacherById(id);
         Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTime(teacher.getTeacherNumber().toString(),time.schoolYearJudge(),time.termJudge());
-        System.out.println(teacher.getId()+time.schoolYearJudge()+time.termJudge());
+        transmission.setMenu(admin_menu);
+        model.addAttribute("transmission",transmission);
         model.addAttribute("curriculums",curriculums);
         model.addAttribute("teacher",teacher);
-        return "detailed-information";
+        return "teacher-detailed-information";
     }
 
     @GetMapping("/admin/data/delete")

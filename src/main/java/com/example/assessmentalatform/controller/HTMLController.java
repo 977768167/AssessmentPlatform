@@ -8,6 +8,7 @@ import com.example.assessmentalatform.mapper.CourseMapper;
 import com.example.assessmentalatform.mapper.CurriculumMapper;
 import com.example.assessmentalatform.mapper.StudentMapper;
 import com.example.assessmentalatform.mapper.TeacherMapper;
+import com.example.assessmentalatform.tool.EchartsDataProcessing;
 import com.example.assessmentalatform.tool.Transmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,14 +31,24 @@ public class HTMLController {
     CurriculumMapper curriculumMapper;
     @Autowired
     CourseMapper courseMapper;
+    String admin_menu="admin_menu";
     @GetMapping("/admin/index")
     public String getIndexAdmin(Model model){//管理员界面
         Integer teacherNumber=teacherMapper.selectTeacherNumber();
         Integer stuNumber=studentMapper.selectStuNumber();
         Integer courseNumber=courseMapper.selectCourseNumber();
+        int[] datas={14,16,16,18,11,10};
+        String[] datas2={"一月","二月","三月","四月","五月","六月"};
+        EchartsDataProcessing echartsDataProcessing=new EchartsDataProcessing();
+        String data=echartsDataProcessing.getFormatData(datas);
+        String data1=echartsDataProcessing.getFormatData(datas2);
         model.addAttribute("teacherNumber",teacherNumber);
         model.addAttribute("stuNumber",stuNumber);
         model.addAttribute("courseNumber",courseNumber);
+        model.addAttribute("data",data);
+        model.addAttribute("data1",data1);
+        System.out.println(data1);
+        System.out.println(data);
         return "index-administrator";
     }
     @GetMapping("/admin/teacher")
@@ -53,14 +64,17 @@ public class HTMLController {
     public String getStuByAdmin(Model model){
 
         transmission.initialization(studentMapper.selectStuNumber());
+        transmission.setMenu(admin_menu);
         model.addAttribute("transmission",transmission);
         Collection<Student> students=studentMapper.selectStuByPage((transmission.getPage()-1)*10);
         model.addAttribute("students",students);
+        model.addAttribute("url","/admin/data/page");
         return "student-information";
     }
     @GetMapping("/admin/curriculum")
     public  String getCurriculumByadmin(Model model){
         transmission.initialization(curriculumMapper.selectCurriculumNumber());
+        transmission.setMenu(admin_menu);
         model.addAttribute("transmission",transmission);
         Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByPage((transmission.getPage()-1)*10);
         model.addAttribute("curriculums",curriculums);

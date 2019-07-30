@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- Bootstrap Styles-->
+    <div th:replace="public::link"></div>
+</head>
+<body>
+<div id="wrapper">
+    <div th:replace="public::bar"></div>
+    <!--      -->
+    <div th:replace="public::${transmission.getMenu()}(Uri='generate-papers.html')"></div>
+
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <!--			 -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">
+                        试题 <small>Test questions</small>
+                    </h1>
+                </div>
+            </div>
+
+            <!--                -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="form-group" th:each="testQuestion:${testQuestions}">
+                            <label th:text="${testQuestion.getQuestion()}"></label><br>
+                            <label th:text="${testQuestion.getA()}"></label><br>
+                            <label th:text="${testQuestion.getB()}"></label><br>
+                            <label th:text="${testQuestion.getC()}"></label><br>
+                            <label th:text="${testQuestion.getD()}"></label><br>
+                        </div>
+                    </div>
+                    <br>
+                    <form th:href="@{/teacher/generate-questions/confirm}" method="post">
+                        <div class="col-md-10" th:each="specialityClass:${specialityClasses}">
+                            <div  class="col-md-3"><input type="checkbox" name="specialityClass"><label th:text="${specialityClass}" th:value="${specialityClass}">网络工程1601</label></div>
+                        </div>
+                    <input type="hidden" name="questionId" th:value="${questionId}">
+                    <div class="col-md-10"></div>
+                    <div class="col-md-2">
+                        <button class="btn btn-info btn-sm" type="submit">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp确认&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+                    </div>
+                    </form>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+</body>
+</html>

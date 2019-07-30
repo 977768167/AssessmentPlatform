@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- Bootstrap Styles-->
+    <div th:replace="public::link"></div>
+</head>
+<body>
+<div id="wrapper">
+    <!--	bar-->
+    <div th:replace="public::bar"></div>
+    <!--      -->
+    <div th:replace="public::teacher_menu(Uri='teacher-multiple-choice.html')"></div>
+    <!--        -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <!--			 -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">
+                        试题信息 <small>Classified information</small>
+                    </h1>
+                </div>
+            </div>
+
+            <!--                -->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            试题表
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                <tr>
+                                    <th>试题ID</th>
+                                    <th>所属课程</th>
+                                    <th>问题</th>
+                                    <th>难度</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="multipleChoice:${multipleChoices}">
+                                    <td th:text="${multipleChoice.getQuestionId()}"></td>
+                                    <td th:text="${multipleChoice.getCourseName()}"></td>
+                                    <td th:text="${multipleChoice.getQuestion()}"></td>
+                                    <td th:text="${multipleChoice.getDifficulty()}"></td>
+                                    <th> <a href="#" class="btn btn-info btn-sm">修改</a>
+                                        <a th:href="@{/admin/data/delete/(object='multipleChoice',id=${multipleChoice.getQuestionId()},page=${transmission.getPage()})}" class="btn btn-danger btn-sm">删除</a>
+                                    </th>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div th:replace="public::page(actionUrl='/teacher/data/page',object='multiplechoice')"></div>
+                            <!--										<div class="col-md-4"></div>-->
+                            <!--                       					<div class="col-md-4"></div>-->
+                        </div>
+
+                    </div>
+
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+</body>
+</html>

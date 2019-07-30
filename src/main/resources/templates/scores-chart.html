@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- Bootstrap Styles-->
+    <div th:replace="public::link"></div>
+</head>
+<body>
+<div id="wrapper">
+    <div th:replace="public::bar"></div>
+    <div th:replace="public::${transmission.getMenu()}(Uri='teacher-information.html')"></div>
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <!--			 -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h1 class="page-header">
+                        图表数据 <small>Detailed information</small>
+                    </h1>
+                </div>
+            </div>
+            <!--                -->
+            <!--<div class="row">-->
+                <!--<div class="col-md-2"></div>-->
+                <!--<div class="col-md-8">-->
+                    <!-- Advanced Tables -->
+                    <div  class="row" id="zj1" style="width: 1500px;height:400px;"></div>
+                    <!--End Advanced Tables -->
+                <!--</div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('zj1'));
+
+    //function getData(){
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        // IE6, IE5 浏览器执行代码
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            var obj=JSON.parse(xmlhttp.responseText)
+            window.alert(obj.dateTime)
+
+            var option = {
+                title: {
+                    text: 'ECharts 入门示例'
+                },
+                tooltip: {},
+                legend: {
+                    data:['销量']
+                },
+                xAxis: {
+                    data:obj.dateTime
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'line',
+                    data:obj.scores
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    }
+    var studentId=[[${studentId}]];
+    var courseId=[[${courseId}]];
+    xmlhttp.open("GET","/teacher/student/chart/data/?studentId="+studentId+"&courseId="+courseId,true);
+    xmlhttp.send();
+    // }
+    // 指定图表的配置项和数据
+
+
+
+</script>

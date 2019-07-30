@@ -15,7 +15,7 @@ public class Transmission {
     private Integer id;//请求操作的id
     private String property;//添加or修改
     private String classification;//当前分类
-
+    private String menu;//引入主菜单
     @Bean
     public Transmission getTransmission(){
         return new Transmission();
@@ -89,5 +89,13 @@ public class Transmission {
 
     public void setClassification(String classification) {
         this.classification = classification;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
     }
 }

@@ -16,6 +16,13 @@
         select * from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term}
     </select>
 
+    <select id="selectCurriculumByTeacherAndTimeAndPage" resultType="com.example.assessmentalatform.bean.Curriculum">
+        select * from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term} limit #{page},10
+    </select>
+    <select id="selectCurriculumNumberByTeacherAndTime" resultType="int">
+        select count(*) from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term}
+    </select>
+
     <insert id="insertCurriculum">
         insert into curriculum(course_id,course_name,teacher_id,teacher_name,speciality,classes,school_year,term) values (#{courseId},#{courseName},#{teacherId},#{teacherName},#{speciality},#{classes},#{schoolYear},#{term})
     </insert>
@@ -24,4 +31,7 @@
         delete from curriculum where id=#{id}
     </delete>
 
+    <select id="selectCurriculumByTeacherAndTimeAndClass" resultType="com.example.assessmentalatform.bean.Curriculum">
+        select * from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term} and speciality=#{speciality} and classes=#{classes}
+    </select>
 </mapper>

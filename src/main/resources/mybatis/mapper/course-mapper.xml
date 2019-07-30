@@ -20,4 +20,11 @@
         delete from course where id=#{id}
     </delete>
 
+    <select id="selectCourseByTeacherIdNumber" resultType="int">
+        select  count(*) from course where course_id in (select course_id from curriculum where teacher_id=#{TeacherId})
+    </select>
+
+    <select id="selectCourseByTeacherId" resultType="com.example.assessmentalatform.bean.Course">
+        select *  from course where course_id in (select course_id from curriculum where teacher_id=#{param1}) limit #{param2},10
+    </select>
 </mapper>

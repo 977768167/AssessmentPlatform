@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.assessmentalatform.mapper.MultipleChoiceMapper">
+<!--插入题目-->
+ <insert id="insertMultipleChoice" >
+     insert into multiple_choice(question,A,B,C,D,answer,difficulty,upload_teacher_number,course_name) values(#{question},#{A},#{B},#{C},#{D},#{answer},#{difficulty},#{uploadTeacherNumber},#{courseName})
+ </insert>
+<!--查询题数-->
+<select id="selectMultipleChoiceNumber" resultType="int">
+    select count(*) from multiple_choice
+</select>
+    <!--根据页数查询题-->
+<select id="selcetMultipleChoiceByPage"   resultType="com.example.assessmentalatform.bean.MultipleChoice">
+     select * from multiple_choice limit #{page},10
+</select>
+    <!--根据教师和课程查询题-->
+<select id="selectMultipleChoiceByTeacherAndcourse" resultType="com.example.assessmentalatform.bean.MultipleChoice">
+    select *  from multiple_choice where  upload_teacher_number = #{teacher_nubmer} and course_name = #{course_name}
+</select>
+<!--删除题-->
+<delete id="deleteMultipleChoiceById" >
+         delete from multiple_choice where question_id=#{id}
+</delete>
+
+<select id="selectMultipleChoiceByTeacherId" resultType="com.example.assessmentalatform.bean.MultipleChoice">
+      select * from multiple_choice where course_name in (select course_name  from curriculum where teacher_id=#{teacherId})
+</select>
+<!--随机查询-->
+<select id="selectMultipleChoiceByRand" resultType="com.example.assessmentalatform.bean.MultipleChoice">
+    select  *  from multiple_choice WHERE difficulty=#{difficulty} order by RAND() LIMIT #{number}
+</select>
+</mapper>

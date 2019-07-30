@@ -15,4 +15,9 @@ public interface CourseMapper {
     public Collection<Course> selectCourseByPage(Integer page);
 
     public int deleteCourseById(Integer id);
+
+    public int selectCourseByTeacherIdNumber(String TeacherId);
+
+    public Collection<Course> selectCourseByTeacherId(String TeacherId,Integer page);
+
 }

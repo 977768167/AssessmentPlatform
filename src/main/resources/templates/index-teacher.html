@@ -12,7 +12,7 @@
 <!--	bar-->
 <div th:replace="public::bar"></div>
 <!--      -->
-<div th:replace="public::teacher_menu(adminUri='index-administrator.html')"></div>
+<div th:replace="public::teacher_menu(Uri='index-teacher.html')"></div>
 <!--        -->
 		<div id="page-wrapper">
             <div id="page-inner">
@@ -24,32 +24,62 @@
                     	</div>
             	</div>
             	<div class="row">
-            		<div class="col-md-3 col-xs-6">
-							<div class="panel panel-default">
-								<div class="panel-body easypiechart-panel">
-									<h4>Customers</h4>
-									<div class="easypiechart easypiechart-blue" data-percent="82" ><span class="percent">82%</span>
-									</div>
-									<h5>1251</h5>
-								</div>
+					<div class="col-md-3 col-sm-12 col-xs-12">
+						<div class="panel panel-primary text-center no-boder bg-color-red">
+							<div class="panel-left pull-left red">
+								<i class="fa fa fa-comments fa-5x"></i>
 							</div>
+
+							<div class="panel-right">
+								<h3>15,823 </h3>
+								<strong>  所教课程数</strong>
+
+							</div>
+						</div>
 					</div>
-           	            		<div class="col-md-3 col-xs-6">
-							<div class="panel panel-default">
-								<div class="panel-body easypiechart-panel">
-									<h4>Customers</h4>
-									<div class="easypiechart easypiechart-red" data-percent="10" ><span class="percent">10%</span>
-									</div>
-									<h5>1251</h5>
-								</div>
+					<div class="col-md-3 col-sm-12 col-xs-12">
+						<div class="panel panel-primary text-center no-boder bg-color-brown">
+							<div class="panel-left pull-left brown">
+								<i class="fa fa-users fa-5x"></i>
 							</div>
+							<div class="panel-right">
+								<h3>36,752 </h3>
+								<strong>所教班级数</strong>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-12 col-xs-12">
+						<div class="panel panel-primary text-center no-boder bg-color-blue">
+							<div class="panel-left pull-left blue">
+								<i class="fa fa-shopping-cart fa-5x"></i>
+							</div>
+
+							<div class="panel-right">
+								<h3>52,160 </h3>
+								<strong> 已上传题数</strong>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-12 col-xs-12">
+						<div class="panel panel-primary text-center no-boder bg-color-green green">
+							<div class="panel-left pull-left green">
+								<i class="fa fa-eye fa-5x"></i>
+
+							</div>
+							<div class="panel-right">
+								<h3>8,457</h3>
+								<strong> 总题数</strong>
+							</div>
+						</div>
 					</div>
             	</div>
             	<div  class="row" id="zj" style="width: 1500px;height:400px;"></div>
 			</div>
 		</div>
 	</div>
-	
+
 </body>
 <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例

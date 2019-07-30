@@ -7,12 +7,21 @@
     <!-- Bootstrap Styles-->
     <div th:replace="public::link"></div>
 </head>
+<script>
+    function informationFuntion(id,menu) {
+        if (menu=="admin_menu")
+            var url='/admin/teacher/information/?id='+id;
+        else
+            var url='/teacher/student/information/?id='+id;
+        window.location.href=url;
+    }
+</script>
 <body>
 	<div id="wrapper">
  <!---->
         <div th:replace="public::bar"></div>
         <!---->
-        <div th:replace="public::admin_menu(adminUri='student-information.html')"></div>
+        <div th:replace="public::${transmission.getMenu()}(Uri='student-information.html')"></div>
         <div id="page-wrapper">
 			<div id="page-inner">
 <!--			 -->
@@ -48,7 +57,7 @@
                                             <td th:text="${student.getSno()}">666</td>
                                             <td th:text="${student.getSpeciality()}">计算机工程学院</td>
                                             <td th:text="${student.getsName()}">赵健</td>
-                                            <td>.........</td>
+                                            <td th:onclick="informationFuntion([[${student.getSno()}]],[[${transmission.getMenu()}]])">.........</td>
                                             <th><a th:href="@{/admin/data/delete/(object='stu',id=${student.getId()},page=${transmission.getPage()})}" class="btn btn-info btn-sm">修改</a>
                                             <a href="#" class="btn btn-danger btn-sm">删除</a>
                                             </th>
@@ -56,7 +65,7 @@
                                     </tbody>
                                 </table>
 <!--										<div class="col-md-4"></div>-->
-				<div th:replace="public::page(actionUrl='/admin/data/page/',object='stu')"></div>
+				<div th:replace="public::page(actionUrl=${url},object='stu')"></div>
 <!--                       					<div class="col-md-4"></div>-->
                         </div>
            							  
