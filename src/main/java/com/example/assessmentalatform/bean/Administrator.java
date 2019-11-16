@@ -5,7 +5,6 @@ public class Administrator {
     private Integer id;
     private String adminName;
     private String password;
-    private String branch;
 
     public Integer getId() {
         return id;
@@ -31,11 +30,4 @@ public class Administrator {
         this.password = password;
     }
 
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
 }

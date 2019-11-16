@@ -28,6 +28,9 @@
                 <div class="col-md-8">
                     <!-- Advanced Tables -->
                     <form th:action="@{/teacher/generate-questions}" method="post">
+                        <select class="form-control" th:name="subject">
+                            <option th:each="course:${courses}" th:text="${course.getCourseName()}" th:value="${course.getCourseName()}">1</option>
+                        </select>
                     <div class="form-group">
                         <label>简单</label>
                         <input class="form-control" name="simple">

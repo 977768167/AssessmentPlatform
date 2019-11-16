@@ -21,5 +21,5 @@ public interface MultipleChoiceMapper {
     //根据教师id查询题
     public Collection<MultipleChoice> selectMultipleChoiceByTeacherId(String TeacherId);
     //随机抽题
-    public Collection<MultipleChoice> selectMultipleChoiceByRand(Integer difficulty,Integer number);
+    public Collection<MultipleChoice> selectMultipleChoiceByRand(Integer difficulty,Integer number,String subject);
 }

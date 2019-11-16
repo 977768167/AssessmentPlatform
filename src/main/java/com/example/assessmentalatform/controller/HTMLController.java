@@ -1,21 +1,19 @@
 package com.example.assessmentalatform.controller;
 
-import com.example.assessmentalatform.bean.Course;
-import com.example.assessmentalatform.bean.Curriculum;
-import com.example.assessmentalatform.bean.Student;
-import com.example.assessmentalatform.bean.Teacher;
-import com.example.assessmentalatform.mapper.CourseMapper;
-import com.example.assessmentalatform.mapper.CurriculumMapper;
-import com.example.assessmentalatform.mapper.StudentMapper;
-import com.example.assessmentalatform.mapper.TeacherMapper;
-import com.example.assessmentalatform.tool.EchartsDataProcessing;
+import com.example.assessmentalatform.bean.*;
+import com.example.assessmentalatform.mapper.*;
+import com.example.assessmentalatform.tool.LoginCheck;
+import com.example.assessmentalatform.tool.Time;
 import com.example.assessmentalatform.tool.Transmission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
 @Controller
@@ -31,25 +29,56 @@ public class HTMLController {
     CurriculumMapper curriculumMapper;
     @Autowired
     CourseMapper courseMapper;
+    @Autowired
+    MultipleChoiceMapper multipleChoiceMapper;
     String admin_menu="admin_menu";
-    @GetMapping("/admin/index")
-    public String getIndexAdmin(Model model){//管理员界面
-        Integer teacherNumber=teacherMapper.selectTeacherNumber();
-        Integer stuNumber=studentMapper.selectStuNumber();
-        Integer courseNumber=courseMapper.selectCourseNumber();
-        int[] datas={14,16,16,18,11,10};
-        String[] datas2={"一月","二月","三月","四月","五月","六月"};
-        EchartsDataProcessing echartsDataProcessing=new EchartsDataProcessing();
-        String data=echartsDataProcessing.getFormatData(datas);
-        String data1=echartsDataProcessing.getFormatData(datas2);
-        model.addAttribute("teacherNumber",teacherNumber);
-        model.addAttribute("stuNumber",stuNumber);
-        model.addAttribute("courseNumber",courseNumber);
-        model.addAttribute("data",data);
-        model.addAttribute("data1",data1);
-        System.out.println(data1);
-        System.out.println(data);
-        return "index-administrator";
+    @Autowired
+    LoginCheck loginCheck;
+    @Autowired
+    Time time;
+    @GetMapping("/login")
+    public String getLogin(){
+
+        return "login";
+    }
+    @PostMapping("/index")
+    public String getIndexAdmin(@RequestParam String adminName, @RequestParam String password, @RequestParam Integer status, Model model, HttpServletRequest request, HttpSession httpSession){//主界面
+
+            User user=new User();
+           user.setUserName(adminName);
+           user.setPassword(password);
+           //账号密码正确存session
+           if (loginCheck.loginCheck(request,user,status)){
+               httpSession.setAttribute("loginUser",user.getUserName());
+           }
+//管理员登录
+           if (status==1) {
+               Integer teacherNumber=teacherMapper.selectTeacherNumber();
+               Integer courseNumber=courseMapper.selectCourseNumber();
+               Integer stuNumber=studentMapper.selectStuNumber();
+               Integer multipleNumber=multipleChoiceMapper.selectMultipleChoiceNumber();
+               model.addAttribute("teacherNumber",teacherNumber);
+               model.addAttribute("courseNumber",courseNumber);
+               model.addAttribute("stuNumber",stuNumber);
+               model.addAttribute("multipleNumber",multipleNumber);
+               transmission.setMenu(admin_menu);
+               return "index-administrator";
+           }
+           //教师登录
+           else if (status==2) {
+               Integer curriculumNumber=curriculumMapper.getCurriculumByTeacherAndTime(user.getUserName(),time.schoolYearJudge(),time.termJudge());
+               Integer classNumber=curriculumMapper.selectCurriculumNumberByTeacherAndTime(user.getUserName(),time.schoolYearJudge(),time.termJudge());
+               Integer myQuestionNumber=multipleChoiceMapper.selectMultipleChoiceByTeacherId(user.getUserName()).size();
+               Integer questionNumber=multipleChoiceMapper.selectMultipleChoiceNumber();
+               model.addAttribute("curriculumNumber",curriculumNumber);
+               model.addAttribute("classNumber",classNumber);
+               model.addAttribute("myQuestionNumber",myQuestionNumber);
+               model.addAttribute("questionNumber",questionNumber);
+               return "index-teacher";
+           }
+
+
+        return "login";
     }
     @GetMapping("/admin/teacher")
     public String getTeacherByAdmin(Model model){
@@ -110,9 +139,33 @@ public class HTMLController {
     public String getIndexStu(){
         return "index-student";
     }
-///////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/admin/index")
+    public String getIndexAdmin(Model model){
+
+        Integer teacherNumber=teacherMapper.selectTeacherNumber();
+        Integer courseNumber=courseMapper.selectCourseNumber();
+        Integer stuNumber=studentMapper.selectStuNumber();
+        Integer multipleNumber=multipleChoiceMapper.selectMultipleChoiceNumber();
+        model.addAttribute("teacherNumber",teacherNumber);
+        model.addAttribute("courseNumber",courseNumber);
+        model.addAttribute("stuNumber",stuNumber);
+        model.addAttribute("multipleNumber",multipleNumber);
+        transmission.setMenu(admin_menu);
+        return "index-administrator";
+    }
+
     @GetMapping("/teacher/index")
-    public String getIndexTeacher(){
+    public String getIndexTeacher(Model model,HttpSession httpSession){
+        Integer curriculumNumber=curriculumMapper.getCurriculumByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge());
+        Integer classNumber=curriculumMapper.selectCurriculumNumberByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge());
+        Integer myQuestionNumber=multipleChoiceMapper.selectMultipleChoiceByTeacherId(httpSession.getAttribute("loginUser").toString()).size();
+        Integer questionNumber=multipleChoiceMapper.selectMultipleChoiceNumber();
+        model.addAttribute("curriculumNumber",curriculumNumber);
+        model.addAttribute("classNumber",classNumber);
+        model.addAttribute("myQuestionNumber",myQuestionNumber);
+        model.addAttribute("questionNumber",questionNumber);
+
         return "index-teacher";
     }
 }

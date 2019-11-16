@@ -27,4 +27,8 @@
     <select id="selectCourseByTeacherId" resultType="com.example.assessmentalatform.bean.Course">
         select *  from course where course_id in (select course_id from curriculum where teacher_id=#{param1}) limit #{param2},10
     </select>
+
+    <select id="getCourseIdByName" resultType="String">
+        select course_id from course where course_name=#{courseName}
+    </select>
 </mapper>

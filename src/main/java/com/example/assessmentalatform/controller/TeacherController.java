@@ -11,10 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class TeacherController {
@@ -32,6 +29,8 @@ public class TeacherController {
     @Autowired
     ScoresMapper scoresMapper;
     @Autowired
+    TaskMapper taskMapper;
+    @Autowired
     Transmission transmission;
     @Autowired
     ExcelUtil excelUtil;
@@ -44,7 +43,6 @@ public class TeacherController {
     @Autowired
     EchartsDataProcessing echartsDataProcessing;
     String teacher_menu="teacher_menu";
-    String teacherId="2014";
     @GetMapping("/teacher/multiplechoice")
     public String getMultipleChoiceByAdmin(Model model){
         transmission.initialization(multipleChoiceMapper.selectMultipleChoiceNumber());
@@ -72,24 +70,24 @@ public class TeacherController {
     }
 
     @GetMapping("/teacher/student")
-    public String getStuByTeacher(Model model){
+    public String getStuByTeacher(Model model, HttpSession httpSession){
 
-        transmission.initialization(studentMapper.selectStuByTeacherIdNumber(teacherId));
+        transmission.initialization(studentMapper.selectStuByTeacherIdNumber(httpSession.getAttribute("loginUser").toString()));
         transmission.setMenu(teacher_menu);
         model.addAttribute("transmission",transmission);
-        Collection<Student> students1=studentMapper.selectTeacherIdFindStu(teacherId,(transmission.getPage()-1)*10);
+        Collection<Student> students1=studentMapper.selectTeacherIdFindStu(httpSession.getAttribute("loginUser").toString(),(transmission.getPage()-1)*10);
         model.addAttribute("students",students1);
         model.addAttribute("url","/teacher/data/page");
         return "student-information";
     }
 
     @GetMapping("/teacher/curriculum")
-    public String getClassByTeacher(Model model){
+    public String getClassByTeacher(Model model,HttpSession httpSession){
 
-        transmission.initialization(curriculumMapper.selectCurriculumNumberByTeacherAndTime(teacherId,time.schoolYearJudge(),time.termJudge()));
+        transmission.initialization(curriculumMapper.selectCurriculumNumberByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge()));
         transmission.setMenu(teacher_menu);
         model.addAttribute("transmission",transmission);
-        Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTime(teacherId,time.schoolYearJudge(),time.termJudge());
+        Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge());
         model.addAttribute("curriculums",curriculums);
         return "curriculum-information";
     }
@@ -116,33 +114,35 @@ public class TeacherController {
     }
     @ResponseBody
     @GetMapping("/teacher/student/chart/data")//获得详细图表数据
-    public ScoresThree getChartData(@RequestParam String studentId, @RequestParam String courseId,Model model){
+    public ScoresThree getChartData(@RequestParam String studentId, @RequestParam String courseId){
         Collection<Scores> scores=scoresMapper.studenteveryDayAvgScores(studentId,courseId);
         return echartsDataProcessing.getJsonData(scores);
     }
 
     @GetMapping("/teacher/generate-papers")//难度选择界面
-    public String getGeneratePapers(Model model){
+    public String getGeneratePapers(Model model,HttpSession httpSession){
         transmission.setMenu(teacher_menu);
+        Collection<Curriculum> courses=curriculumMapper.selectCurriculumByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge());
+        model.addAttribute("courses",courses);
         model.addAttribute("transmission",transmission);
         return "generate-papers";
     }
 
     @PostMapping("/teacher/generate-questions")//题目展示页面
-    public String getGenerateQuestions(@ModelAttribute ProblemDifficulty problemDifficulty, Model model, HttpSession httpSession){
+    public String getGenerateQuestions(@ModelAttribute ProblemDifficulty problemDifficulty, Model model,HttpSession httpSession){
 
-        Collection<MultipleChoice> testQuestions=multipleChoiceMapper.selectMultipleChoiceByRand(1,problemDifficulty.getSimple());
-        testQuestions.addAll(multipleChoiceMapper.selectMultipleChoiceByRand(2,problemDifficulty.getMedium()));
-        testQuestions.addAll(multipleChoiceMapper.selectMultipleChoiceByRand(3,problemDifficulty.getDifficulty()));
+        Collection<MultipleChoice> testQuestions=multipleChoiceMapper.selectMultipleChoiceByRand(1,problemDifficulty.getSimple(),problemDifficulty.getSubject());
+        testQuestions.addAll(multipleChoiceMapper.selectMultipleChoiceByRand(2,problemDifficulty.getMedium(),problemDifficulty.getSubject()));
+        testQuestions.addAll(multipleChoiceMapper.selectMultipleChoiceByRand(3,problemDifficulty.getDifficulty(),problemDifficulty.getSubject()));
 
-        Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTime(teacherId,time.schoolYearJudge(),time.termJudge());
+        Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge());
         ArrayList<String> specialityClass=echartsDataProcessing.getSpecialityClass(curriculums);
         ArrayList<Integer> questionId=new ArrayList<>();
         Iterator<MultipleChoice> iterator=testQuestions.iterator();
         while (iterator.hasNext()){
             questionId.add(iterator.next().getQuestionId());
         }
-        httpSession.setAttribute("questionId",questionId);
+        model.addAttribute("subject",problemDifficulty.getSubject());
         model.addAttribute("questionId",questionId);
         model.addAttribute("specialityClasses",specialityClass);
         model.addAttribute("testQuestions",testQuestions);
@@ -151,29 +151,36 @@ public class TeacherController {
         return "problem";
     }
     @PostMapping("/teacher/generate-questions/confirm")
-    public String confirmGenerateQuestions(@ModelAttribute String[] specialityClass,@ModelAttribute Integer[] questionId){
+    public String confirmGenerateQuestions(@RequestParam String[] specialityClass,@RequestParam String[] questionId,@RequestParam String subject){
 
-        System.out.println(specialityClass);
-        System.out.println(questionId);
+        Task task=new Task();
+        for (int i=0;i<specialityClass.length;i++) {
+            task.setCourseId(courseMapper.getCourseIdByName(subject));
+            task.setCourseName(subject);
+            task.setSpeciality(echartsDataProcessing.resolveSpecialityClass(specialityClass[i])[0]);
+            task.setClasses(echartsDataProcessing.resolveSpecialityClass(specialityClass[i])[1]);
+            task.setQuestion(Arrays.toString(questionId));
+            taskMapper.insertTask(task);
+        }
         return "index-teacher";
     }
     @GetMapping("/teacher/data/page")//数据分页
-    public String teacherSelectByPage(@RequestParam String object,@RequestParam("page") Integer page, Model model){
+    public String teacherSelectByPage(@RequestParam String object,@RequestParam("page") Integer page, Model model,HttpSession httpSession){
 
         transmission.setPage(page);
         transmission.setMenu(teacher_menu);
         if (object.equals("curriculum")) {
 
-            transmission.boundaryJudgment(curriculumMapper.selectCurriculumNumberByTeacherAndTime(teacherId,time.schoolYearJudge(),time.termJudge()));
+            transmission.boundaryJudgment(curriculumMapper.selectCurriculumNumberByTeacherAndTime(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge()));
             model.addAttribute("transmission",transmission);
-            Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTimeAndPage(teacherId,time.schoolYearJudge(),time.termJudge(),(transmission.getPage()-1)*10);
+            Collection<Curriculum> curriculums=curriculumMapper.selectCurriculumByTeacherAndTimeAndPage(httpSession.getAttribute("loginUser").toString(),time.schoolYearJudge(),time.termJudge(),(transmission.getPage()-1)*10);
             model.addAttribute("curriculums",curriculums);
             return "curriculum-information";
         }
         else if(object.equals("stu")){
 
-            transmission.boundaryJudgment(studentMapper.selectStuByTeacherIdNumber(teacherId));
-            Collection<Student> students=studentMapper.selectTeacherIdFindStu(teacherId,(transmission.getPage()-1)*10);
+            transmission.boundaryJudgment(studentMapper.selectStuByTeacherIdNumber(httpSession.getAttribute("loginUser").toString()));
+            Collection<Student> students=studentMapper.selectTeacherIdFindStu(httpSession.getAttribute("loginUser").toString(),(transmission.getPage()-1)*10);
             model.addAttribute("students",students);
             model.addAttribute("transmission",transmission);
             model.addAttribute("url","/teacher/data/page");
@@ -198,18 +205,7 @@ public class TeacherController {
         model.addAttribute("data",data);
         return "problem";
     }
-    @ResponseBody
-    @GetMapping("/a")
-    public String[] geddd(){
-
-        int[] data={10,12,53};
-        String[] data1={"一月","二月","三月","四月","五月"};
-        Collection<Scores> scores=scoresMapper.studenteveryDayAvgScores("201613052","1111");
-        System.out.println(scores.iterator().next().getDateTime());
-        EchartsDataProcessing echartsDataProcessing=new EchartsDataProcessing();
-        return data1;
-
-    }
+//数据测试
     @ResponseBody
     @GetMapping("/aa")
     public JsonQuestBean getSt(){

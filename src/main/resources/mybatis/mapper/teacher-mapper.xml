@@ -24,4 +24,7 @@
         delete from teacher where id=#{id}
     </delete>
 
+    <select id="selectTeacherByTeacherId" resultType="com.example.assessmentalatform.bean.Teacher">
+        select * from teacher where teacher_number=#{teacherId}
+    </select>
 </mapper>

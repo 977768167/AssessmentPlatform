@@ -20,4 +20,6 @@ public interface CourseMapper {
 
     public Collection<Course> selectCourseByTeacherId(String TeacherId,Integer page);
 
+    public String getCourseIdByName(String courseName);
+
 }

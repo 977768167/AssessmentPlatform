@@ -29,6 +29,6 @@
 </select>
 <!--随机查询-->
 <select id="selectMultipleChoiceByRand" resultType="com.example.assessmentalatform.bean.MultipleChoice">
-    select  *  from multiple_choice WHERE difficulty=#{difficulty} order by RAND() LIMIT #{number}
+    select  *  from multiple_choice WHERE difficulty=#{difficulty} and course_name=#{subject} order by RAND() LIMIT #{number}
 </select>
 </mapper>

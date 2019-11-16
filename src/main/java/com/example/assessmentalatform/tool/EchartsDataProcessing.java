@@ -72,4 +72,13 @@ public class EchartsDataProcessing {
         specialityClass.addAll(hashSet);
         return specialityClass;
     }
+
+    public String[] resolveSpecialityClass(String specialityClass){
+
+        String[] resolve=new String[2];
+        resolve[0]=specialityClass.substring(0,specialityClass.length()-4);
+        resolve[1]=specialityClass.substring(specialityClass.length()-4);
+
+        return resolve;
+    }
 }

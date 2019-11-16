@@ -23,5 +23,7 @@ public interface CurriculumMapper {
     public int selectCurriculumNumberByTeacherAndTime(String teacherId,String schoolYear,String term);
 
     public Collection<Curriculum> selectCurriculumByTeacherAndTimeAndClass(String teacherId,String schoolYear,String term,String speciality,String classes);
+    //去重
+    public Integer getCurriculumByTeacherAndTime(String teacherId,String schoolYear,String term);
 
 }

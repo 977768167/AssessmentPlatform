@@ -38,10 +38,11 @@
                         </div>
                     </div>
                     <br>
-                    <form th:href="@{/teacher/generate-questions/confirm}" method="post">
+                    <form th:action="@{/teacher/generate-questions/confirm}" method="post">
                         <div class="col-md-10" th:each="specialityClass:${specialityClasses}">
-                            <div  class="col-md-3"><input type="checkbox" name="specialityClass"><label th:text="${specialityClass}" th:value="${specialityClass}">网络工程1601</label></div>
+                            <div  class="col-md-3"><input type="checkbox" name="specialityClass"  th:value="${specialityClass}"/><label th:text="${specialityClass}">网络工程1601</label></div>
                         </div>
+                    <input type="hidden" name="subject" th:value="${subject}">
                     <input type="hidden" name="questionId" th:value="${questionId}">
                     <div class="col-md-10"></div>
                     <div class="col-md-2">

@@ -34,4 +34,8 @@
     <select id="selectCurriculumByTeacherAndTimeAndClass" resultType="com.example.assessmentalatform.bean.Curriculum">
         select * from curriculum where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term} and speciality=#{speciality} and classes=#{classes}
     </select>
+
+    <select id="getCurriculumByTeacherAndTime" resultType="int">
+        SELECT COUNT(distinct course_name) FROM `curriculum` where teacher_id=#{teacherId} and school_year=#{schoolYear} and term=#{term}
+    </select>
 </mapper>
